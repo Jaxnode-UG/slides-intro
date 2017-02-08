@@ -26,11 +26,11 @@ const firebaseConfig = {
 };
 
 const initialPolls = [
-  {question: 'Javascript Experience', options: ['No', '< 1 year', '< 3 years', '+ 3 years']},
-  {question: 'React Experience', options: ['No', '< 1 year', '< 3 years', '+ 3 years']},
-  {question: 'React Native Experience', options: ['No', '< 1 year', '+ 1 year']},
-  {question: 'iOS Experience', options: ['No', '< 1 year', '< 3 years', '+ 3 years']},
-  {question: 'Android Experience', options: ['No', '< 1 year', '< 3 years', '+ 3 years']},
+  {question: 'Javascript Experience', options: ['None', '< 1 year', '< 3 years', '+ 3 years']},
+  {question: 'React Experience', options: ['None', '< 1 year', '< 3 years', '+ 3 years']},
+  {question: 'React Native Experience', options: ['None', '< 1 year', '+ 1 year']},
+  {question: 'iOS Experience', options: ['None', '< 1 year', '< 3 years', '+ 3 years']},
+  {question: 'Android Experience', options: ['None', '< 1 year', '< 3 years', '+ 3 years']},
 ];
 
 class Options extends Component {
@@ -67,12 +67,13 @@ class Options extends Component {
 }
 
 export default class LivePoll extends Component {
+  state = {
+    selectedPoll: 0,
+    polls: [],
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      selectedPoll: 0,
-      polls: [],
-    };
     const firebaseApp = firebase.initializeApp(firebaseConfig);
     this.pollsRef = firebaseApp.database().ref('polls');
 
@@ -101,6 +102,13 @@ export default class LivePoll extends Component {
     );
   }
 
+  componentDidMount() {
+    this.pollsRef.on('value', (items) => {
+      let polls = items.val() || [];
+      this.setState({ polls });
+    });
+  }
+
   componentWillUpdate() {
     LayoutAnimation.easeInEaseOut();
   }
@@ -124,15 +132,9 @@ export default class LivePoll extends Component {
   }
 
   _vote(poll, option) {
-    this.pollsRef.child(`${poll}/votes/${Exponent.Constants.deviceId}`).set({ option: option })
+    this.pollsRef.child(`${poll}/votes/${Exponent.Constants.deviceId}`).set({ option })
   }
 
-  componentDidMount() {
-    this.pollsRef.on('value', (items) => {
-      let polls = items.val() || [];
-      this.setState({ polls });
-    });
-  }
 }
 
 const screen = Dimensions.get('window');
@@ -168,11 +170,13 @@ const styles = StyleSheet.create({
   },
   optionText: {
     color: 'white',
+    fontWeight: '700'
   },
   optionCount: {
     paddingLeft: 10,
     backgroundColor: 'transparent',
-    color: 'white'
+    color: 'white',
+    fontWeight: '800'
   },
   navigationContainer: {
     flexDirection: 'row',

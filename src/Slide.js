@@ -27,10 +27,11 @@ export default class Slide extends Component {
   }
 }
 
+const screen = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: Dimensions.get('window').width,
+    width: screen.width,
+    height: screen.height,
     alignItems: 'center',
     justifyContent: 'center',
   },

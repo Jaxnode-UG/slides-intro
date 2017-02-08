@@ -13,7 +13,7 @@ export default class LayoutExample extends Component {
       <View style={[styles.box, {
         position: 'absolute',
         bottom: 0,
-        left: 0,
+        left: 40,
         width: 40,
         backgroundColor: 'blue'
       }]}/>
@@ -24,11 +24,19 @@ export default class LayoutExample extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    height: 120,
+    height: 80,
     width: 120,
-    backgroundColor: 'gray',
+    backgroundColor: '#dfdfdf',
   },
   box: {
     height: 40,
   },
 });
+
+// flex: 2
+// width: 40
+// remove absolute
+// overflow hidden
+// flexWrap: wrap
+// justifyContent: center
+// remove container height
